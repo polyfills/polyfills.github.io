@@ -1,0 +1,128 @@
+include mixins
+
+doctype html
+html
+  head
+    title Polyfills as a Service
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/styles/default.min.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/styles/monokai_sublime.min.css')
+    style: include style.css
+
+  body
+    nav.navbar.navbar-default.navbar-static-top(role='navigation')
+      a.navbar-brand(href='https://polyfills.github.io') Polyfills
+      ul.nav.navbar-nav
+        li: a(href='https://polyfills.github.io/badgeboard') Badgeboard
+        li: a(href='https://github.com/polyfills') Repositories
+    main
+      section
+        :markdown
+          Polyfills is a service that detects the current browser using the `User-Agent` header and bundles all the necessary polyfills into a single JS file, effectively polyfilling the browser itself.
+          It also keeps track of the best polyfills on the web and the browser and versions it is needed on.
+          You may now use the latest JS features and have it work on essentially all browsers with minimal effort.
+
+          Add the following code your HTML page:
+
+          ```html
+          <script src="//cdn.jsdelivr.net/polyfills/polyfill.js"></script>
+          ```
+
+          And you're good to go! Use `Promise`, `requestAnimationFrame()`, and so on in any browser!
+
+          This polyfill service is hosted by [jsDelivr](http://www.jsdelivr.com) at https://cdn.jsdelivr.net/polyfills/polyfill.js and maintained in the [Polyfills GitHub Organization](https://github.com/polyfills).
+
+      section
+        :markdown
+          ## API
+
+          #### GET https://cdn.jsdelivr.net/polyfills/polyfill.js
+
+          Returns a JavaScript bundle of polyfills based on the current `User-Agent`.
+          The following query string parameters are supported:
+
+          - `include` - A `,` or `;`-delimited list of polyfills to include
+          - `exclude` - A `,` or `;`-deliminted list of polyfills to exclude
+
+          You may either `include` or `exclude` polyfills, but not both.
+          You select each polyfill be their `slug` listed below.
+
+          Examples:
+
+          ```html
+          <-- only include dom-elements and promises -->
+          <script src="https://cdn.jsdelivr.net/polyfills/polyfill.js?include=domels;promise"></script>
+          <-- include everything but promises and dom-elements -->
+          <script src="https://cdn.jsdelivr.net/polyfills/polyfill.js?exclude=domels;promise"></script>
+          ```
+
+      section
+        :markdown
+          ## Middleware
+
+          The long-term goal of this service is to embed it within your node.js application.
+          Requiring the usage of a CDN adds DNS lookup and HTTP request latency.
+          Ideally, you would SPDY or HTTP/2 push each polyfill bundle to the client within the same server,
+          removing any latency.
+          Polyfilling middleware for node.js frameworks are available with SPDY push support:
+
+          - [koa-polyfills](https://github.com/polyfills/koa) for [koa](http://koajs.com)
+          - [polyfills-middleware](https://github.com/polyfills/middleware) for [Express](http://expressjs.com) and any other `(req, res, next)` node.js framework
+
+      section
+        :markdown
+          ## Polyfills
+
+          Polyfills are tracked in [polyfills-db](https://github.com/polyfills/db),
+          particularly [lib/polyfills.js](https://github.com/polyfills/db/blob/master/lib/polyfills.js).
+          Feel free to make pull requests to add, change, or update the metadata of each polyfill.
+          Only high-quality, well-tested polyfills are used.
+          Correctness is chosen over the final bundle size.
+
+        .table-wrap
+          table.table.table-striped.table-bordered
+            thead
+              tr
+                //- th Polyfill
+                th Slug
+                th Repository
+                th Features
+                th Sources
+                th IE
+                th Firefox
+                th Chrome
+                th Safari
+                th Opera
+                th iOS
+                th Android
+            tbody
+              for polyfill in polyfills
+                - var browsers = polyfill.browsers
+                - var defaults = browsers && 'default' in browsers ? browsers.default : true
+                tr
+                  //- td= polyfill.name
+                  td= polyfill.shortName || ''
+                  td: +repo(polyfill.repo)
+                  td: ul
+                    for feature in polyfill.features
+                      +code(feature)
+                  td: ul
+                    for source in polyfill.sources
+                      +source(source)
+                  +supports(polyfill, 'ie', defaults)
+                  +supports(polyfill, 'ff', defaults)
+                  +supports(polyfill, 'chrome', defaults)
+                  +supports(polyfill, 'safari', defaults)
+                  +supports(polyfill, 'opera', defaults)
+                  +supports(polyfill, 'ios', defaults)
+                  +supports(polyfill, 'android', defaults)
+
+        :markdown
+          - Green versions represent the minimum version where the feature is supported.
+            If the feature is supported, the polyfill is not included.
+          - Green checkmarks mean the feature is supported on all relevant versions and thus the polyfill is never included.
+          - Red means the feature is not supported and thus the polyfill is included.
+
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/highlight.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/languages/html.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/languages/javascript.min.js')

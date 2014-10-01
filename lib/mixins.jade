@@ -1,0 +1,29 @@
+
+mixin repo(name)
+  a(href=(~name.indexOf('://') ? '' : 'https://github.com/') + name)= name
+
+mixin code(str)
+  li: code= str
+
+mixin supports(polyfill, browser, defaults)
+  td
+    - var browsers = polyfill.browsers
+    - var version = browsers && browsers[browser]
+    if version === true
+      span.green &#x2713;
+    else if version
+      span.green >= #{version}
+    else if defaults
+      span.red &times;
+    else
+      span.green &#x2713;
+
+mixin source(url)
+  - var source
+  if /\.mozilla\./.test(url)
+    - source = 'MDN'
+  else if /caniuse\./.test(url)
+    - source = 'Can I use?'
+  else if /\/compat-table\//.test(url)
+    - source = 'ES Compatibility Table'
+  li: a(href=url)= source

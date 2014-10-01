@@ -1,0 +1,54 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main {
+  position: relative;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 40px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+table ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+td {
+  white-space: nowrap;
+}
+
+h2 {
+  border-bottom: 1px solid #eee;
+}
+
+p {
+  padding-right: 20px;
+}
+
+pre {
+  background-color: #23241f;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
