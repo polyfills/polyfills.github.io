@@ -11,7 +11,7 @@ html
 
   body
     nav.navbar.navbar-default.navbar-static-top(role='navigation')
-      a.navbar-brand(href='https://polyfills.github.io') Polyfills
+      a.navbar-brand(href='/') Polyfills
       ul.nav.navbar-nav
         li: a(href='https://polyfills.github.io/badgeboard') Badgeboard
         li: a(href='https://github.com/polyfills') Repositories
@@ -36,24 +36,22 @@ html
         :markdown
           ## API
 
-          #### GET https://cdn.jsdelivr.net/polyfills/polyfill.js
+          #### GET https://cdn.jsdelivr.net/polyfills/polyfill.js ± [polyfills...]
 
           Returns a JavaScript bundle of polyfills based on the current `User-Agent`.
-          The following query string parameters are supported:
-
-          - `include` - A `,` or `;`-delimited list of polyfills to include
-          - `exclude` - A `,` or `;`-deliminted list of polyfills to exclude
-
-          You may either `include` or `exclude` polyfills, but not both.
-          You select each polyfill be their `slug` listed below.
+          You may either include or exclude a `,`-delimited list of polyfills.
+          You select each polyfill by their `slug` listed below.
 
           Examples:
 
           ```html
+          <!-- RECOMMENDED: include everything but Element.prototype.classList and Element.prototype.matches(), both of which are handled by the dom4 polyfill! -->
+          <script src="https://cdn.jsdelivr.net/polyfills/polyfill.js-clsls,mtchs"></script>
+
           <-- only include dom-elements and promises -->
-          <script src="https://cdn.jsdelivr.net/polyfills/polyfill.js?include=domels;promise"></script>
+          <script src="https://cdn.jsdelivr.net/polyfills/polyfill.js+domels,promise"></script>
           <-- include everything but promises and dom-elements -->
-          <script src="https://cdn.jsdelivr.net/polyfills/polyfill.js?exclude=domels;promise"></script>
+          <script src="https://cdn.jsdelivr.net/polyfills/polyfill.js-domels,promise"></script>
           ```
 
       section
