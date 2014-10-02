@@ -18,14 +18,15 @@ html
     main
       section
         :markdown
-          Polyfills is a service that detects the current browser using the `User-Agent` header and bundles all the necessary polyfills into a single JS file, effectively polyfilling the browser itself.
-          It also keeps track of the best polyfills on the web and the browser and versions it is needed on.
+          [Polyfill as-a-service](https://github.com/polyfills/paas) detects the current browser using the `User-Agent` header
+          and bundles all the necessary polyfills into a single JS file, effectively polyfilling the browser itself.
+          It also keeps track of the best polyfills and the relevant browser versions.
           You may now use the latest JS features and have it work on essentially all browsers with minimal effort.
 
           Add the following code your HTML page:
 
           ```html
-          <script src="//cdn.jsdelivr.net/polyfills/polyfill.js"></script>
+          <script src="https://cdn.jsdelivr.net/polyfills/polyfill.js"></script>
           ```
 
           And you're good to go! Use `Promise`, `requestAnimationFrame()`, and so on in any browser!
@@ -40,7 +41,8 @@ html
 
           Returns a JavaScript bundle of polyfills based on the current `User-Agent`.
           You may either include or exclude a `,`-delimited list of polyfills.
-          You select each polyfill by their `slug` listed below.
+          To include polyfills, use a `-`, otherwise, use a `+`.
+          You select each polyfill by its `slug` listed below.
 
           Examples:
 
@@ -48,9 +50,9 @@ html
           <!-- RECOMMENDED: include everything but Element.prototype.classList and Element.prototype.matches(), both of which are handled by the dom4 polyfill! -->
           <script src="https://cdn.jsdelivr.net/polyfills/polyfill.js-clsls,mtchs"></script>
 
-          <-- only include dom-elements and promises -->
+          <!-- only include dom-elements and promises -->
           <script src="https://cdn.jsdelivr.net/polyfills/polyfill.js+domels,promise"></script>
-          <-- include everything but promises and dom-elements -->
+          <!-- include everything but promises and dom-elements -->
           <script src="https://cdn.jsdelivr.net/polyfills/polyfill.js-domels,promise"></script>
           ```
 
@@ -75,10 +77,10 @@ html
           particularly [lib/polyfills.js](https://github.com/polyfills/db/blob/master/lib/polyfills.js).
           Feel free to make pull requests to add, change, or update the metadata of each polyfill.
           Only high-quality, well-tested polyfills are used.
-          Correctness is chosen over the final bundle size.
+          Correctness and robustness is preferred over the final bundle size.
 
           To test whether all the relevant polyfills are being loaded correctly,
-          open https://cdn.jsdelivr.net/polyfills/test.html in the relevant browser.
+          open https://cdn.jsdelivr.net/polyfills/test.html.
 
         .table-wrap
           table.table.table-striped.table-bordered
@@ -119,10 +121,10 @@ html
                   +supports(polyfill, 'android', defaults)
 
         :markdown
-          - Green versions represent the minimum version where the feature is supported.
+          - Green versions represent the minimum supported version.
             If the feature is supported, the polyfill is not included.
           - Green checkmarks mean the feature is supported on all relevant versions and thus the polyfill is never included.
-          - Red means the feature is not supported and thus the polyfill is included.
+          - Red means the feature is not supported and thus the polyfill is always included (unless manually excluded).
 
     script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/highlight.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/languages/html.min.js')
