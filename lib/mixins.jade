@@ -27,3 +27,9 @@ mixin source(url)
   else if /\/compat-table\//.test(url)
     - source = 'ES Compatibility Table'
   li: a(href=url)= source
+
+mixin check(yes)
+  if yes
+    span.green &#x2713;
+  else
+    span.red &times;
