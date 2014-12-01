@@ -89,7 +89,6 @@ html
                 //- th Polyfill
                 th Slug
                 th Repository
-                th Inclusive
                 th Features
                 th Sources
                 th IE
@@ -107,7 +106,6 @@ html
                   //- td= polyfill.name
                   td= polyfill.shortName || ''
                   td: +repo(polyfill.repo)
-                  th: +check(polyfill.inclusive)
                   td: ul
                     for feature in polyfill.features
                       +code(feature)
@@ -123,9 +121,6 @@ html
                   +supports(polyfill, 'android', defaults)
 
         :markdown
-          - Inclusive indicates whether the polyfill is included by default and can be excluded.
-            Usually, a polyfill is not included by default if it is contained within another polyfill.
-            When you specifically include polyfills, this property is irrelevant.
           - Green versions represent the minimum supported version.
             If the feature is supported, the polyfill is not included.
           - Green checkmarks mean the feature is supported on all relevant versions and thus the polyfill is never included.
